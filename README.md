@@ -1,1 +1,1420 @@
-# Project1
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Tech Lab — HTML CSS & JavaScript Practical Programs</title>
+<style>
+/* ============ GLOBAL THEME ============ */
+:root{
+  --sw:280px;--navy:#0b1220;--navy2:#131c31;--primary:#1d4ed8;
+  --primary2:#2563eb;--accent:#3b82f6;--bg:#f4f6fb;--surface:#fff;
+  --text:#0f172a;--muted:#64748b;--border:#e2e8f0;--border2:#cbd5e1;
+  --success:#059669;--danger:#dc2626;
+  --r:10px;--rs:6px;
+  --sh:0 1px 2px rgba(15,23,42,.06);--sh2:0 6px 20px rgba(15,23,42,.09);
+  --fh:Georgia,'Times New Roman',serif;
+  --fb:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --fm:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);
+  line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:var(--fh);line-height:1.25;}
+a{color:var(--primary);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+.app{display:flex;min-height:100vh;}
+
+/* ============ SIDEBAR ============ */
+.sidebar{width:var(--sw);background:linear-gradient(180deg,var(--navy),var(--navy2));
+  color:#cbd5e1;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;
+  z-index:60;transition:transform .25s;}
+.sidebar::-webkit-scrollbar{width:8px;}
+.sidebar::-webkit-scrollbar-thumb{background:#243049;border-radius:4px;}
+.sidebar-header{display:flex;align-items:center;gap:12px;padding:20px 22px;
+  border-bottom:1px solid #1c2742;position:sticky;top:0;
+  background:linear-gradient(180deg,#0b1220,#0e1830);z-index:2;}
+.logo{width:42px;height:42px;border-radius:9px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fh);font-weight:700;color:#fff;font-size:15px;
+  box-shadow:0 4px 12px rgba(37,99,235,.45);}
+.logo-title{font-family:var(--fh);color:#fff;font-size:16px;font-weight:700;}
+.logo-sub{font-size:11px;color:#7d8ba5;letter-spacing:1.4px;
+  text-transform:uppercase;}
+.sidebar-nav{padding:14px 12px 30px;}
+.nav-section-title{font-size:10.5px;letter-spacing:1.6px;
+  text-transform:uppercase;color:#5c6b88;padding:14px 12px 6px;font-weight:700;}
+.nav-link{display:flex;align-items:center;gap:10px;padding:8px 12px;
+  border-radius:var(--rs);color:#c2ccdd;font-size:13.5px;cursor:pointer;
+  border:1px solid transparent;transition:.15s;text-decoration:none;}
+.nav-link:hover{background:#16203a;color:#fff;text-decoration:none;}
+.nav-link.active{background:linear-gradient(90deg,rgba(37,99,235,.35),
+  rgba(37,99,235,.08));color:#fff;border-color:#243a6e;}
+.nav-link .num{font-family:var(--fm);font-size:11px;color:#5f7096;
+  min-width:22px;text-align:right;}
+.nav-link.active .num{color:#7aa7ff;}
+.nav-link .dot{width:6px;height:6px;border-radius:50%;background:#334155;
+  flex-shrink:0;}
+.nav-link.active .dot{background:var(--accent);
+  box-shadow:0 0 0 3px rgba(59,130,246,.2);}
+.sidebar-footer{padding:16px 22px;font-size:11px;color:#4b5a75;
+  border-top:1px solid #1c2742;}
+
+/* ============ MAIN ============ */
+.main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;
+  min-height:100vh;}
+.topbar{display:flex;align-items:center;gap:16px;padding:14px 32px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:40;box-shadow:var(--sh);}
+.hamburger{display:none;background:none;border:1px solid var(--border);
+  border-radius:var(--rs);padding:7px 11px;font-size:16px;cursor:pointer;}
+.breadcrumb{flex:1;font-size:13px;color:var(--muted);display:flex;
+  align-items:center;gap:8px;flex-wrap:wrap;}
+.breadcrumb strong{color:var(--text);font-weight:600;}
+.breadcrumb .sep{color:#cbd5e1;}
+.badge{font-size:11px;font-weight:700;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--primary);background:#eef2ff;
+  border:1px solid #dbe3ff;padding:4px 10px;border-radius:20px;}
+.content{flex:1;padding:32px 40px 60px;max-width:1180px;width:100%;}
+.footer{text-align:center;padding:22px;font-size:12.5px;color:var(--muted);
+  border-top:1px solid var(--border);background:var(--surface);}
+
+/* ============ HERO ============ */
+.hero{background:linear-gradient(135deg,#0b1220,#1a2a55 55%,#1d4ed8);
+  color:#fff;border-radius:14px;padding:44px 42px;margin-bottom:32px;
+  box-shadow:var(--sh2);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;
+  height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.35),transparent 70%);}
+.hero .kicker{font-size:11.5px;letter-spacing:2.4px;text-transform:uppercase;
+  color:#93b4ff;font-weight:700;margin-bottom:12px;}
+.hero h1{font-size:clamp(1.7rem,3.4vw,2.5rem);color:#fff;margin-bottom:6px;}
+.hero h2{font-family:var(--fb);font-size:1.05rem;font-weight:500;
+  color:#c7d5f5;margin-bottom:14px;}
+.hero p{max-width:640px;color:#a9b8d9;font-size:14.5px;}
+
+/* ============ CARDS ============ */
+.card-grid{display:grid;gap:24px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.card{background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:28px 26px;box-shadow:var(--sh);
+  display:flex;flex-direction:column;transition:.2s;position:relative;
+  overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.card.c-html::before{background:linear-gradient(90deg,#b45309,#f59e0b);}
+.card.c-css::before{background:linear-gradient(90deg,#1e40af,#3b82f6);}
+.card.c-js::before{background:linear-gradient(90deg,#0f172a,#334155);}
+.card:hover{transform:translateY(-4px);box-shadow:var(--sh2);
+  border-color:var(--border2);}
+.card .icon{width:48px;height:48px;border-radius:10px;display:flex;
+  align-items:center;justify-content:center;font-family:var(--fh);
+  font-weight:700;color:#fff;font-size:15px;margin-bottom:16px;}
+.c-html .icon{background:linear-gradient(135deg,#b45309,#f59e0b);}
+.c-css .icon{background:linear-gradient(135deg,#1e40af,#3b82f6);}
+.c-js .icon{background:linear-gradient(135deg,#0f172a,#334155);}
+.card h3{font-size:1.3rem;margin-bottom:6px;}
+.card .count{font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--muted);font-weight:700;margin-bottom:10px;}
+.card p{color:var(--muted);font-size:13.8px;flex:1;margin-bottom:20px;}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--primary);color:#fff;border:none;border-radius:var(--rs);
+  padding:10px 20px;font-size:13.5px;font-weight:600;cursor:pointer;
+  text-decoration:none;transition:.15s;font-family:var(--fb);}
+.btn:hover{background:var(--primary2);color:#fff;text-decoration:none;
+  transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,99,235,.3);}
+.btn.ghost{background:transparent;color:var(--primary);
+  border:1px solid var(--border2);}
+.btn.ghost:hover{background:#f8fafc;color:var(--primary);box-shadow:none;}
+.btn.small{padding:7px 14px;font-size:12.5px;}
+.btn.success{background:var(--success);}
+.btn.success:hover{background:#10b981;}
+.btn.danger{background:var(--danger);}
+.btn.danger:hover{background:#ef4444;}
+
+/* ============ PAGE HEAD ============ */
+.page-head{margin-bottom:26px;}
+.crumb{font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--primary);font-weight:700;margin-bottom:10px;}
+.page-head h1{font-size:clamp(1.5rem,2.6vw,2rem);margin-bottom:8px;}
+.page-head .lead{color:var(--muted);font-size:14.5px;max-width:780px;}
+
+/* ============ DEMO CARD ============ */
+.demo-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;box-shadow:var(--sh);margin-bottom:26px;}
+.demo-label{display:flex;align-items:center;gap:8px;background:#f8fafc;
+  border-bottom:1px solid var(--border);padding:11px 18px;font-size:11.5px;
+  letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);
+  font-weight:700;}
+.demo-label::before{content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--success);box-shadow:0 0 0 3px rgba(5,150,105,.15);}
+.demo-body{padding:26px 24px;}
+.page-actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:8px;}
+
+/* ============ PROGRAM LIST ============ */
+.list-wrap{max-width:860px;}
+.prog-list{list-style:none;}
+.prog-item{display:flex;align-items:center;gap:16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;padding:16px 20px;
+  margin-bottom:10px;text-decoration:none;color:inherit;transition:.15s;
+  box-shadow:var(--sh);}
+.prog-item:hover{border-color:var(--primary);text-decoration:none;
+  transform:translateX(3px);box-shadow:0 6px 18px rgba(37,99,235,.12);}
+.prog-item .idx{width:38px;height:38px;flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;background:#eef2ff;
+  color:var(--primary);border-radius:9px;font-weight:700;font-family:var(--fm);
+  font-size:13px;}
+.prog-item .meta{flex:1;min-width:0;}
+.prog-item .t{font-weight:600;font-size:14.5px;}
+.prog-item .d{font-size:12.5px;color:var(--muted);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prog-item .arrow{color:var(--border2);font-size:18px;}
+
+/* ============ HELPERS ============ */
+.out{background:#0b1220;color:#7dd3fc;font-family:var(--fm);font-size:13px;
+  padding:14px 16px;border-radius:var(--rs);margin-top:12px;
+  white-space:pre-wrap;word-break:break-word;min-height:44px;
+  border:1px solid #1c2742;}
+.out.light{background:#f8fafc;color:var(--text);border-color:var(--border);}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.field label{font-size:12.5px;font-weight:600;}
+input[type=text],input[type=email],input[type=password],input[type=number],
+input[type=tel],input[type=search],input[type=url],input[type=date],
+select,textarea{font-family:var(--fb);font-size:14px;padding:9px 12px;
+  border:1px solid var(--border2);border-radius:var(--rs);background:#fff;
+  width:100%;max-width:360px;transition:.15s;}
+input:focus,select:focus,textarea:focus{outline:none;
+  border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15);}
+input.err{border-color:var(--danger);box-shadow:0 0 0 3px rgba(220,38,38,.12);}
+input.ok{border-color:var(--success);
+  box-shadow:0 0 0 3px rgba(5,150,105,.12);}
+.hint{font-size:12px;color:var(--muted);margin-top:4px;}
+.hint.err{color:var(--danger);}
+.hint.ok{color:var(--success);}
+.section-h{font-family:var(--fh);font-size:1.05rem;margin:18px 0 10px;
+  padding-bottom:6px;border-bottom:1px solid var(--border);}
+.section-h:first-child{margin-top:0;}
+
+/* ============ PROGRAM-SPECIFIC ============ */
+/* HTML-06 tables */
+.tbl{border-collapse:collapse;width:100%;max-width:520px;font-size:13.5px;
+  margin-bottom:18px;}
+.tbl th,.tbl td{border:1px solid var(--border2);padding:8px 12px;
+  text-align:left;}
+.tbl thead th{background:#f1f5f9;font-weight:700;}
+.tbl tbody tr:nth-child(even){background:#f8fafc;}
+
+/* HTML-07 form */
+fieldset{border:1px solid var(--border2);border-radius:8px;
+  padding:14px 18px;margin-bottom:14px;}
+legend{padding:0 8px;font-weight:700;font-size:13px;color:var(--primary);}
+.opt{display:inline-flex;align-items:center;gap:6px;margin-right:16px;
+  font-size:13.5px;}
+
+/* HTML-08 semantic */
+.layout{display:grid;gap:6px;grid-template-columns:1fr 2fr 1fr;
+  grid-template-rows:auto 1fr auto;
+  grid-template-areas:"h h h" "n m a" "f f f";height:280px;font-size:12.5px;}
+.layout > *{padding:10px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-weight:600;}
+.layout .h{grid-area:h;background:#1e40af;}
+.layout .n{grid-area:n;background:#2563eb;}
+.layout .m{grid-area:m;background:#3b82f6;}
+.layout .a{grid-area:a;background:#60a5fa;}
+.layout .f{grid-area:f;background:#1e3a8a;}
+
+/* CSS-01 */
+.box-c1{padding:16px;border-radius:8px;margin-bottom:10px;font-size:13.5px;
+  font-weight:600;}
+.box-c1.id{background:#1e40af;color:#fff;}
+.box-c1.cls{background:#eef2ff;color:#1e40af;border:1px solid #c7d5ff;}
+.box-c1.grad{background:linear-gradient(135deg,#1d4ed8,#06b6d4);color:#fff;}
+
+/* CSS-02 */
+.bm{background:#eef2ff;border:4px solid #1e40af;padding:24px;margin:16px;
+  width:280px;font-size:13px;color:#1e40af;font-weight:600;text-align:center;
+  border-radius:4px;position:relative;}
+.bm::before{content:'margin 16px';position:absolute;top:-14px;left:8px;
+  font-size:10.5px;color:#94a3b8;letter-spacing:.5px;}
+
+/* CSS-03 */
+.t1{font-family:Georgia,serif;font-size:26px;font-weight:700;
+  letter-spacing:-.5px;}
+.t2{font-family:'Courier New',monospace;font-size:15px;color:#1d4ed8;}
+.t3{font-size:14px;line-height:1.8;text-align:justify;text-indent:28px;
+  color:#334155;}
+.t4{font-size:13px;text-transform:uppercase;letter-spacing:3px;
+  color:#64748b;font-weight:700;}
+
+/* CSS-04 */
+.grid4{display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));}
+.swatch{height:90px;border-radius:8px;display:flex;align-items:flex-end;
+  padding:8px;color:#fff;font-size:11.5px;font-weight:700;
+  text-shadow:0 1px 2px rgba(0,0,0,.4);}
+
+/* CSS-05 */
+.card5{background:#fff;padding:20px;border-radius:10px;margin-bottom:14px;
+  font-size:13.5px;}
+
+/* CSS-06 */
+.pos-demo{position:relative;height:200px;background:#f1f5f9;border-radius:8px;
+  overflow:hidden;border:1px solid var(--border2);}
+.abs{position:absolute;top:20px;right:20px;background:#1e40af;color:#fff;
+  padding:10px 16px;border-radius:6px;font-size:12.5px;font-weight:600;}
+.rel{position:relative;left:20px;top:40px;display:inline-block;
+  background:#dbeafe;color:#1e40af;padding:8px 14px;border-radius:6px;
+  font-size:12.5px;font-weight:600;}
+.static{display:inline-block;background:#fef3c7;color:#92400e;
+  padding:8px 14px;border-radius:6px;font-size:12.5px;}
+
+/* CSS-07 */
+.float-box{float:left;width:110px;height:110px;
+  background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff;
+  border-radius:8px;margin:0 16px 8px 0;display:flex;align-items:center;
+  justify-content:center;font-weight:700;}
+.clearfix::after{content:'';display:table;clear:both;}
+
+/* CSS-08 */
+.flexrow{display:flex;gap:10px;background:#f1f5f9;padding:12px;
+  border-radius:8px;margin-bottom:12px;}
+.fi{flex:1;background:#1e40af;color:#fff;padding:16px;border-radius:6px;
+  text-align:center;font-weight:700;font-size:13.5px;}
+.flexrow.between{justify-content:space-between;}
+.flexrow.between .fi{flex:0 0 auto;padding:12px 20px;}
+.flexrow.center{align-items:center;justify-content:center;height:110px;}
+.flexrow.center .fi{flex:0 0 auto;padding:16px 26px;}
+
+/* CSS-09 */
+.gridg{display:grid;gap:10px;grid-template-columns:repeat(4,1fr);
+  grid-template-rows:60px 60px;
+  grid-template-areas:"h h h h" "s m m a";}
+.gridg > div{display:flex;align-items:center;justify-content:center;
+  border-radius:6px;color:#fff;font-weight:700;font-size:12.5px;}
+.g-h{grid-area:h;background:#1e3a8a;}
+.g-s{grid-area:s;background:#2563eb;}
+.g-m{grid-area:m;background:#3b82f6;}
+.g-a{grid-area:a;background:#60a5fa;}
+.autogrid{display:grid;gap:10px;margin-top:14px;
+  grid-template-columns:repeat(auto-fill,minmax(70px,1fr));}
+.autogrid div{background:#eef2ff;color:#1e40af;padding:14px 0;text-align:center;
+  border-radius:6px;font-weight:700;font-size:12.5px;}
+
+/* CSS-10 */
+.anim-row{display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+.ball{width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#1d4ed8,#06b6d4);}
+.ball.pulse{animation:pPulse 1.6s ease-in-out infinite;}
+.ball.slide{animation:pSlide 1.8s ease-in-out infinite alternate;}
+.ball.spin{animation:pSpin 2s linear infinite;
+  background:conic-gradient(#1d4ed8,#06b6d4,#1d4ed8);}
+@keyframes pPulse{0%,100%{transform:scale(1);opacity:1;}
+  50%{transform:scale(1.18);opacity:.75;}}
+@keyframes pSlide{from{transform:translateX(0);}
+  to{transform:translateX(110px);}}
+@keyframes pSpin{to{transform:rotate(360deg);}}
+.resize-box{resize:horizontal;overflow:auto;min-width:220px;max-width:100%;
+  border:2px dashed var(--border2);border-radius:10px;padding:14px;
+  background:#f8fafc;}
+.rgrid{display:grid;gap:8px;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));}
+.rgrid div{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;
+  border-radius:6px;padding:14px 8px;text-align:center;font-size:12.5px;
+  font-weight:700;}
+
+/* Calculator */
+.calc{max-width:320px;margin:0 auto;background:#0f172a;border-radius:14px;
+  padding:18px;box-shadow:var(--sh2);}
+.calc-display{background:#020617;color:#fff;font-size:1.9rem;
+  font-family:var(--fm);text-align:right;padding:12px 14px;border-radius:8px;
+  margin-bottom:12px;min-height:64px;overflow-x:auto;word-break:break-all;}
+.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.calc-keys button{padding:15px 0;font-size:1.05rem;border:none;
+  border-radius:8px;background:#1e293b;color:#e2e8f0;cursor:pointer;
+  font-weight:600;transition:.12s;font-family:var(--fb);}
+.calc-keys button:hover{background:#334155;}
+.calc-keys .op{background:#1e40af;color:#fff;}
+.calc-keys .op:hover{background:#2563eb;}
+.calc-keys .eq{background:#059669;color:#fff;grid-column:span 2;}
+.calc-keys .eq:hover{background:#10b981;}
+.calc-keys .clr{background:#b91c1c;color:#fff;}
+.calc-keys .clr:hover{background:#dc2626;}
+
+/* Clock */
+.clock{text-align:center;background:#0f172a;color:#fff;padding:32px 20px;
+  border-radius:12px;}
+.clock .time{font-family:var(--fm);font-size:3.2rem;letter-spacing:4px;}
+.clock .date{color:#94a3b8;font-size:14px;margin-top:8px;}
+
+/* Stopwatch */
+.sw{text-align:center;background:#0f172a;color:#fff;padding:28px;
+  border-radius:12px;}
+.sw .t{font-family:var(--fm);font-size:2.6rem;letter-spacing:2px;
+  margin-bottom:16px;}
+
+/* Countdown */
+.cd{text-align:center;background:#0f172a;color:#fff;padding:28px;
+  border-radius:12px;}
+.cd .t{font-family:var(--fm);font-size:2.4rem;letter-spacing:2px;
+  margin:14px 0;color:#7dd3fc;}
+.cd input{max-width:90px;text-align:center;background:#fff;color:#0f172a;
+  display:inline-block;}
+
+/* Todo */
+.todo{max-width:520px;}
+.todo-row{display:flex;gap:8px;margin-bottom:14px;}
+.todo-row input{flex:1;max-width:none;}
+ul.tlist{list-style:none;}
+ul.tlist li{display:flex;align-items:center;gap:10px;padding:10px 14px;
+  background:#fff;border:1px solid var(--border);border-radius:8px;
+  margin-bottom:8px;font-size:14px;}
+ul.tlist li.done .txt{text-decoration:line-through;color:#94a3b8;}
+ul.tlist li .txt{flex:1;cursor:pointer;}
+ul.tlist li .del{background:none;border:none;color:#dc2626;cursor:pointer;
+  font-size:16px;padding:0 6px;}
+.empty{color:#94a3b8;font-size:13px;text-align:center;padding:18px;}
+
+/* DOM helpers */
+.dom-box{padding:16px;border:1px solid var(--border2);border-radius:8px;
+  background:#f8fafc;margin-bottom:12px;font-size:14px;}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#eef2ff;
+  color:#1e40af;padding:6px 12px;border-radius:20px;font-size:13px;
+  font-weight:600;margin:0 8px 8px 0;}
+.chip button{background:none;border:none;color:#1e40af;cursor:pointer;
+  font-size:14px;font-weight:700;padding:0;}
+ul.tree{list-style:none;padding-left:18px;border-left:1px dashed var(--border2);}
+ul.tree li{padding:4px 0;font-size:13.5px;}
+.node{display:inline-block;padding:2px 10px;background:#eef2ff;color:#1e40af;
+  border-radius:6px;font-weight:600;font-size:12.5px;}
+
+/* Events */
+.clickzone{height:130px;border:2px dashed #cbd5e1;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+  color:var(--muted);cursor:pointer;user-select:none;transition:.15s;}
+.clickzone:hover{border-color:#1e40af;background:#f8fafc;}
+.mousezone{height:130px;background:#0f172a;color:#7dd3fc;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:14px;transition:.2s;}
+.keyzone{background:#0f172a;color:#fff;padding:20px;border-radius:12px;
+  text-align:center;outline:none;cursor:pointer;}
+.keyzone .k{display:inline-block;min-width:60px;padding:8px 16px;
+  background:#1e293b;border-radius:8px;font-family:var(--fm);font-size:1.2rem;
+  margin-top:8px;}
+
+/* Validation */
+.vmsg{padding:10px 14px;border-radius:8px;font-size:13.5px;margin-top:12px;
+  display:none;}
+.vmsg.ok{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;
+  display:block;}
+.vmsg.err{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;
+  display:block;}
+
+/* Browser objects */
+.kv{display:grid;grid-template-columns:180px 1fr;gap:8px 14px;font-size:13.5px;}
+.kv .k{color:var(--muted);font-weight:600;}
+.kv .v{font-family:var(--fm);word-break:break-all;}
+
+/* Timers */
+.timerbox{text-align:center;background:#0f172a;color:#fff;padding:24px;
+  border-radius:12px;}
+.timerbox .t{font-family:var(--fm);font-size:2rem;color:#7dd3fc;margin:12px 0;}
+
+/* Storage */
+.storage{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.panel{background:#f8fafc;border:1px solid var(--border);border-radius:10px;
+  padding:16px;}
+.panel h4{margin-bottom:10px;font-size:14px;color:#1e40af;}
+.panel .val{font-family:var(--fm);font-size:13px;background:#fff;
+  border:1px solid var(--border);border-radius:6px;padding:10px;
+  min-height:44px;word-break:break-all;margin-bottom:10px;}
+.panel input{max-width:none;margin-bottom:8px;}
+@media (max-width:640px){ .storage{grid-template-columns:1fr;} }
+
+/* Media */
+audio,video{width:100%;max-width:520px;border-radius:10px;background:#0f172a;}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:980px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);box-shadow:0 0 40px rgba(0,0,0,.4);}
+  .main{margin-left:0;}
+  .hamburger{display:inline-flex;}
+  .content{padding:24px 20px 50px;}
+  .hero{padding:32px 24px;}
+  .topbar{padding:12px 18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">WTL</div>
+      <div>
+        <div class="logo-title">Web Tech Lab</div>
+        <div class="logo-sub">Practical Programs</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+    <div class="sidebar-footer">
+      35 Programs · HTML · CSS · JS<br>Academic Year 2025
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <span class="badge">Student Project</span>
+    </header>
+    <main class="content" id="content"></main>
+    <footer class="footer">
+      © 2025 Web Tech Lab — HTML, CSS &amp; JavaScript Practical Assignment ·
+      Total 35 Programs (10 HTML · 10 CSS · 15 JavaScript)
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PROGRAM CATALOGUE (all 35 programs with live demos)
+   ============================================================ */
+const PROGRAMS = {
+html:[
+{ id:'html-01', num:1, title:'Basic HTML Document Structure',
+  desc:'The essential skeleton of every web page.',
+  body:`<h1>This is a Heading 1</h1><h2>This is a Heading 2</h2>
+    <h3>This is a Heading 3</h3>
+    <p style="margin-top:10px;">This is a paragraph. HTML documents are built from nested elements.</p>
+    <p>Each element can carry attributes with additional information.</p>
+    <hr style="margin:16px 0;border:none;border-top:1px solid var(--border);">
+    <div class="section-h">Source Structure</div>
+    <div class="out">&lt;!DOCTYPE html&gt;\n&lt;html lang="en"&gt;\n  &lt;head&gt;\n    &lt;meta charset="UTF-8"&gt;\n    &lt;title&gt;Page Title&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;h1&gt;Hello World&lt;/h1&gt;\n    &lt;p&gt;My first web page.&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</div>` },
+{ id:'html-02', num:2, title:'Text Formatting Tags',
+  desc:'Bold, italic, underline, sub, sup, mark, code.',
+  body:`<p>This is <b>bold</b> and this is <strong>strong (important)</strong>.</p>
+    <p>This is <i>italic</i> and this is <em>emphasised</em>.</p>
+    <p>This is <u>underlined</u> and this is <s>struck through</s>.</p>
+    <p>Water is H<sub>2</sub>O and E = mc<sup>2</sup>.</p>
+    <p>Use the <mark>mark tag</mark> to highlight text.</p>
+    <p>Press <kbd style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 7px;border-radius:4px;font-family:var(--fm);font-size:12px;">Ctrl</kbd> + <kbd style="background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 7px;border-radius:4px;font-family:var(--fm);font-size:12px;">S</kbd> to save.</p>
+    <p>Inline code: <code style="background:#f1f5f9;padding:2px 7px;border-radius:4px;font-family:var(--fm);font-size:13px;color:#b91c1c;">console.log('Hello');</code></p>
+    <p><small>This text uses the small element.</small></p>
+    <p style="margin-top:12px;"><abbr title="HyperText Markup Language">HTML</abbr> is the standard markup language.</p>` },
+{ id:'html-03', num:3, title:'Lists — Ordered, Unordered &amp; Definition',
+  desc:'Three kinds of HTML lists with nested structures.',
+  body:`<div class="section-h">Ordered List</div>
+    <ol><li>Open the code editor</li>
+      <li>Create a new HTML file
+        <ol type="a"><li>Save with .html extension</li>
+        <li>Write the boilerplate</li></ol></li>
+      <li>Open the file in a browser</li></ol>
+    <div class="section-h">Unordered List</div>
+    <ul><li>HTML — structure</li><li>CSS — presentation</li>
+      <li>JavaScript — behaviour</li></ul>
+    <div class="section-h">Definition List</div>
+    <dl>
+      <dt style="font-weight:700;color:#1e40af;">HTML</dt>
+      <dd style="margin:0 0 8px 22px;color:var(--muted);">HyperText Markup Language — defines the structure of a web page.</dd>
+      <dt style="font-weight:700;color:#1e40af;">CSS</dt>
+      <dd style="margin:0 0 8px 22px;color:var(--muted);">Cascading Style Sheets — controls the visual presentation.</dd>
+      <dt style="font-weight:700;color:#1e40af;">JavaScript</dt>
+      <dd style="margin:0 0 8px 22px;color:var(--muted);">A programming language that adds interactivity to web pages.</dd>
+    </dl>` },
+{ id:'html-04', num:4, title:'Links &amp; Anchors',
+  desc:'Internal, external, email, telephone and download links.',
+  body:`<p style="margin-bottom:12px;">Different kinds of hyperlinks:</p>
+    <p><a href="javascript:void(0)">Internal link (this page)</a></p>
+    <p style="margin-top:8px;"><a href="https://developer.mozilla.org" target="_blank" rel="noopener">External link to MDN (opens in new tab)</a></p>
+    <p style="margin-top:8px;"><a href="mailto:student@example.com">Send an email</a></p>
+    <p style="margin-top:8px;"><a href="tel:+911234567890">Call +91 12345 67890</a></p>
+    <div class="section-h">Named Anchor</div>
+    <p><a href="#tgt" onclick="event.preventDefault();document.getElementById('tgt').scrollIntoView({behavior:'smooth'});">Jump to target ↓</a></p>
+    <div style="height:100px;"></div>
+    <div id="tgt" style="padding:14px;background:#eef2ff;border-left:4px solid #1e40af;border-radius:6px;">
+      <strong>Target reached.</strong> You jumped to this anchor.</div>` },
+{ id:'html-05', num:5, title:'Images &amp; Figures',
+  desc:'Embedding images with alt text and captions.',
+  body:`<figure style="margin:0;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="220" viewBox="0 0 400 220" style="border-radius:10px;display:block;box-shadow:var(--sh2);">
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1e40af"/><stop offset="1" stop-color="#06b6d4"/>
+      </linearGradient></defs>
+      <rect width="400" height="220" fill="url(#g1)"/>
+      <circle cx="200" cy="90" r="42" fill="white" opacity=".15"/>
+      <text x="200" y="160" fill="white" font-family="Georgia" font-size="22" text-anchor="middle">Sample Image</text>
+    </svg>
+    <figcaption style="margin-top:10px;font-size:13px;color:var(--muted);font-style:italic;">
+      Figure 1 — An embedded SVG image with a caption inside a &lt;figure&gt; element.
+    </figcaption></figure>
+    <div class="section-h">Image Attributes</div>
+    <div class="out light">src      → path of the image file\nalt      → alternative text if the image fails\nwidth / height → rendered dimensions\nloading  → "lazy" to defer off-screen images\ntitle    → tooltip on hover</div>` },
+{ id:'html-06', num:6, title:'Tables',
+  desc:'Rows, columns, headings, colspan and rowspan.',
+  body:`<div class="section-h">Student Marks Table</div>
+    <table class="tbl">
+      <thead><tr><th>Roll</th><th>Name</th><th>Subject</th><th>Marks</th></tr></thead>
+      <tbody>
+        <tr><td>101</td><td>Anita</td><td>Web Tech</td><td>92</td></tr>
+        <tr><td>102</td><td>Rahul</td><td>Web Tech</td><td>87</td></tr>
+        <tr><td>103</td><td>Meera</td><td>Web Tech</td><td>95</td></tr>
+      </tbody>
+      <tfoot><tr><th colspan="3" style="text-align:right;">Average</th><th>91.3</th></tr></tfoot>
+    </table>
+    <div class="section-h">Rowspan Example</div>
+    <table class="tbl">
+      <tr><th rowspan="2">Dept</th><th colspan="2">Semester</th></tr>
+      <tr><th>Odd</th><th>Even</th></tr>
+      <tr><td>CSE</td><td>Yes</td><td>Yes</td></tr>
+      <tr><td>ECE</td><td>Yes</td><td>No</td></tr>
+    </table>` },
+{ id:'html-07', num:7, title:'Forms &amp; Input Types',
+  desc:'A complete form demonstrating every common input control.',
+  body:`<form onsubmit="event.preventDefault();alert('Form submitted (demo).');">
+    <fieldset><legend>Personal Details</legend>
+      <div class="field"><label>Full Name</label><input type="text" placeholder="Your full name"></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <div class="field"><label>Date of Birth</label><input type="date"></div>
+    </fieldset>
+    <fieldset><legend>Preferences</legend>
+      <div class="field"><label>Gender</label><div>
+        <label class="opt"><input type="radio" name="g"> Male</label>
+        <label class="opt"><input type="radio" name="g"> Female</label>
+        <label class="opt"><input type="radio" name="g"> Other</label></div></div>
+      <div class="field"><label>Skills</label><div>
+        <label class="opt"><input type="checkbox"> HTML</label>
+        <label class="opt"><input type="checkbox"> CSS</label>
+        <label class="opt"><input type="checkbox"> JavaScript</label></div></div>
+      <div class="field"><label>Country</label>
+        <select><option>India</option><option>USA</option><option>UK</option><option>Other</option></select></div>
+      <div class="field"><label>Comments</label><textarea rows="3" placeholder="Your feedback..."></textarea></div>
+    </fieldset>
+    <button class="btn" type="submit">Submit</button>
+    <button class="btn ghost" type="reset" style="margin-left:8px;">Reset</button>
+  </form>` },
+{ id:'html-08', num:8, title:'Semantic HTML5 Elements',
+  desc:'header, nav, main, aside, footer — a real page layout.',
+  body:`<div class="layout">
+    <div class="h">&lt;header&gt;</div>
+    <div class="n">&lt;nav&gt;</div>
+    <div class="m">&lt;main&gt;</div>
+    <div class="a">&lt;aside&gt;</div>
+    <div class="f">&lt;footer&gt;</div>
+  </div>
+  <div class="section-h">Why Semantic Tags Matter</div>
+  <ul style="padding-left:20px;color:var(--muted);font-size:13.5px;">
+    <li>Improve accessibility for screen readers</li>
+    <li>Help search engines understand page structure</li>
+    <li>Make code easier to read and maintain</li>
+    <li>Replace generic &lt;div&gt; soup with meaningful markup</li>
+  </ul>` },
+{ id:'html-09', num:9, title:'Multimedia — Audio &amp; Video',
+  desc:'Embedding audio and video players with native HTML5 controls.',
+  body:`<div class="section-h">Audio Player</div>
+    <audio controls><source src="audio.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+    <p class="hint">Demo player (no source loaded). Add your own audio.mp3.</p>
+    <div class="section-h">Video Player</div>
+    <video controls style="min-height:180px;"><source src="video.mp4" type="video/mp4">Your browser does not support video.</video>
+    <p class="hint">Demo player (no source loaded). Add your own video.mp4.</p>
+    <div class="section-h">Key Attributes</div>
+    <div class="out light">controls → play/pause/volume\nautoplay → starts automatically\nloop → repeats when finished\nmuted → starts muted\nposter → preview image for video</div>` },
+{ id:'html-10', num:10, title:'Meta Tags &amp; Iframe',
+  desc:'Metadata in the head and embedding another document.',
+  body:`<div class="section-h">Common Meta Tags</div>
+    <div class="out light">&lt;meta charset="UTF-8"&gt;\n&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;\n&lt;meta name="description" content="Page summary"&gt;\n&lt;meta name="author" content="Student Name"&gt;\n&lt;meta name="keywords" content="html, css, javascript"&gt;</div>
+    <div class="section-h">Iframe (inline frame)</div>
+    <iframe style="width:100%;height:200px;border:1px solid var(--border2);border-radius:8px;background:#fff;"
+      srcdoc="&lt;h2 style='font-family:Georgia;color:#1e40af;text-align:center;margin-top:60px;'&gt;Hello from inside the iframe!&lt;/h2&gt;&lt;p style='text-align:center;color:#64748b;font-family:sans-serif;'&gt;This content is a separate document embedded in the page.&lt;/p&gt;"></iframe>
+    <p class="hint">The &lt;iframe&gt; above uses <code>srcdoc</code> to display inline HTML.</p>` }
+],
+
+css:[
+{ id:'css-01', num:1, title:'Selectors &amp; Colors',
+  desc:'Element, class and ID selectors with different colour formats.',
+  body:`<div class="box-c1 id">ID selector (#idBox) — hex colour</div>
+    <div class="box-c1 cls">Class selector (.clsBox) — light theme</div>
+    <div class="box-c1 grad">Gradient background (linear-gradient)</div>
+    <div class="section-h">Colour Formats</div>
+    <div class="out light">#1e40af          → hex\nrgb(30, 64, 175) → rgb\nrgba(30,64,175,.5) → rgb with alpha\nhsl(220, 70%, 40%) → hsl</div>` },
+{ id:'css-02', num:2, title:'The Box Model',
+  desc:'Content, padding, border and margin — the four layers of every box.',
+  body:`<div class="bm">Content Area<br>
+      <span style="font-weight:400;color:#475569;font-size:12px;">padding 24px · border 4px · margin 16px</span></div>
+    <div class="section-h">Total Rendered Width</div>
+    <div class="out light">width    = 280px\npadding  = 24px × 2 = 48px\nborder   = 4px × 2  = 8px\n─────────────────────────────\ncontent box total = 336px\nmargin   = 16px × 2 = 32px (outside)\n─────────────────────────────\noverall footprint = 368px</div>
+    <p class="hint" style="margin-top:10px;">With <code>box-sizing: border-box</code>, padding and border are included inside the declared width.</p>` },
+{ id:'css-03', num:3, title:'Text &amp; Typography',
+  desc:'Font families, sizes, weights, spacing and alignment.',
+  body:`<p class="t1" style="margin-bottom:10px;">Serif Heading — Georgia</p>
+    <p class="t2" style="margin-bottom:10px;">Monospace code style — Courier New</p>
+    <p class="t3" style="margin-bottom:14px;">This paragraph demonstrates justified text with a first-line indent. Typography is the art of arranging type to make written language legible, readable and appealing when displayed.</p>
+    <p class="t4">Uppercase · letter-spacing · sans-serif</p>` },
+{ id:'css-04', num:4, title:'Backgrounds &amp; Gradients',
+  desc:'Solid colours, linear gradients and radial gradients.',
+  body:`<div class="grid4">
+      <div class="swatch" style="background:#1e40af;">Solid #1e40af</div>
+      <div class="swatch" style="background:linear-gradient(135deg,#1e40af,#06b6d4);">Linear 135°</div>
+      <div class="swatch" style="background:linear-gradient(to right,#f59e0b,#ef4444);">Linear →</div>
+      <div class="swatch" style="background:radial-gradient(circle,#3b82f6,#0b1220);">Radial</div>
+    </div>
+    <div class="section-h">Syntax</div>
+    <div class="out light">background: linear-gradient(direction, color1, color2, ...);\nbackground: radial-gradient(shape, color1, color2, ...);\nbackground-image: url('image.jpg');</div>` },
+{ id:'css-05', num:5, title:'Borders &amp; Box Shadow',
+  desc:'Border styles, radius and layered shadows.',
+  body:`<div class="card5" style="border:2px solid #1e40af;">Solid border · 2px · #1e40af</div>
+    <div class="card5" style="border:2px dashed #f59e0b;">Dashed border · 2px · amber</div>
+    <div class="card5" style="border:2px dotted #059669;">Dotted border · 2px · emerald</div>
+    <div class="card5" style="border:1px solid #e2e8f0;box-shadow:0 8px 24px rgba(15,23,42,.14);">Soft elevated shadow</div>
+    <div class="card5" style="border:1px solid #e2e8f0;border-radius:20px;box-shadow:0 0 0 4px rgba(59,130,246,.18);">Focus-ring style shadow with border-radius 20px</div>` },
+{ id:'css-06', num:6, title:'Display &amp; Positioning',
+  desc:'static, relative, absolute and fixed positioning.',
+  body:`<div class="pos-demo">
+      <span class="static" style="margin:14px;">static</span>
+      <span class="rel">relative (left 20px, top 40px)</span>
+      <span class="abs">absolute (top 20, right 20)</span>
+    </div>
+    <div class="section-h">Position Values</div>
+    <div class="out light">static   → normal document flow (default)\nrelative → offset from its normal position\nabsolute → positioned against nearest positioned ancestor\nfixed    → positioned against the browser viewport\nsticky   → toggles between relative and fixed</div>` },
+{ id:'css-07', num:7, title:'Float &amp; Clear',
+  desc:'Wrapping text around a floated element and clearing floats.',
+  body:`<div class="clearfix">
+      <div class="float-box">FLOAT</div>
+      <p style="font-size:13.5px;color:#334155;">This paragraph wraps around the floated box on the left. Floats were the original layout technique in CSS and are still useful for wrapping text around images or callouts. The clearfix hack ensures the parent container expands to contain its floated children.</p>
+    </div>
+    <div class="section-h">Clearfix Pattern</div>
+    <div class="out light">.clearfix::after {\n  content: "";\n  display: table;\n  clear: both;\n}</div>` },
+{ id:'css-08', num:8, title:'Flexbox Layout',
+  desc:'Direction, alignment, justification and gaps.',
+  body:`<div class="section-h">Equal Columns (flex: 1)</div>
+    <div class="flexrow"><div class="fi">1</div><div class="fi">2</div><div class="fi">3</div></div>
+    <div class="section-h">Space Between</div>
+    <div class="flexrow between"><div class="fi">Left</div><div class="fi">Centre</div><div class="fi">Right</div></div>
+    <div class="section-h">Centred Vertically &amp; Horizontally</div>
+    <div class="flexrow center"><div class="fi">Centred</div></div>
+    <div class="out light">display: flex;\njustify-content: center | space-between;\nalign-items: center;\ngap: 10px;</div>` },
+{ id:'css-09', num:9, title:'CSS Grid Layout',
+  desc:'Named grid areas and auto-fill responsive grids.',
+  body:`<div class="section-h">Named Areas</div>
+    <div class="gridg">
+      <div class="g-h">HEADER</div><div class="g-s">SIDE</div>
+      <div class="g-m">MAIN CONTENT</div><div class="g-a">ASIDE</div>
+    </div>
+    <div class="section-h">Auto-Fill Grid</div>
+    <div class="autogrid"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div></div>
+    <div class="out light" style="margin-top:14px;">grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));\ngrid-template-areas:\n  "h h h h"\n  "s m m a";</div>` },
+{ id:'css-10', num:10, title:'Animations &amp; Responsive Design',
+  desc:'Keyframe animations and fluid grid layouts.',
+  body:`<div class="section-h">@keyframes Animation</div>
+    <div class="anim-row">
+      <div class="ball pulse"></div><div class="ball slide"></div><div class="ball spin"></div>
+    </div>
+    <p class="hint" style="margin-top:14px;">Pulse · Slide · Spin — each uses a different @keyframes rule.</p>
+    <div class="section-h">Responsive Grid (drag to resize)</div>
+    <div class="resize-box"><div class="rgrid">
+      <div>Box 1</div><div>Box 2</div><div>Box 3</div>
+      <div>Box 4</div><div>Box 5</div><div>Box 6</div>
+    </div></div>
+    <div class="section-h">Media Query Example</div>
+    <div class="out light">@media (max-width: 600px) {\n  .sidebar { display: none; }\n  .grid   { grid-template-columns: 1fr; }\n}</div>` }
+],
+
+javascript:[
+{ id:'js-01', num:1, title:'Digital Calculator',
+  desc:'A working calculator supporting the four basic operations.',
+  body:`<div class="calc">
+      <div class="calc-display" id="calcDisp">0</div>
+      <div class="calc-keys" id="calcKeys">
+        <button class="clr" data-a="clr">C</button>
+        <button class="op" data-a="op" data-v="/">÷</button>
+        <button class="op" data-a="op" data-v="*">×</button>
+        <button class="op" data-a="op" data-v="-">−</button>
+        <button data-a="n" data-v="7">7</button>
+        <button data-a="n" data-v="8">8</button>
+        <button data-a="n" data-v="9">9</button>
+        <button class="op" data-a="op" data-v="+">+</button>
+        <button data-a="n" data-v="4">4</button>
+        <button data-a="n" data-v="5">5</button>
+        <button data-a="n" data-v="6">6</button>
+        <button data-a="n" data-v="1">1</button>
+        <button data-a="n" data-v="2">2</button>
+        <button data-a="n" data-v="3">3</button>
+        <button data-a="n" data-v="0">0</button>
+        <button data-a="n" data-v=".">.</button>
+        <button class="eq" data-a="eq">=</button>
+      </div>
+    </div>`,
+  init(){
+    const disp=document.getElementById('calcDisp');
+    const keys=document.getElementById('calcKeys');
+    let cur='0';
+    const paint=()=>disp.textContent=cur;
+    keys.addEventListener('click',e=>{
+      const b=e.target.closest('button'); if(!b)return;
+      const a=b.dataset.a, v=b.dataset.v;
+      if(a==='clr'){cur='0';paint();return;}
+      if(a==='eq'){
+        try{
+          const r=Function('"use strict";return ('+cur+')')();
+          cur=String(Math.round(r*1e10)/1e10);
+        }catch(_){cur='Error';}
+        paint();return;
+      }
+      if(a==='op'){
+        const last=cur.slice(-1);
+        if('+-*/'.includes(last)) cur=cur.slice(0,-1)+v;
+        else cur+=v;
+        paint();return;
+      }
+      if(cur==='0'&&v!=='.') cur=v;
+      else if(v==='.'&&cur.split(/[+\-*/]/).pop().includes('.')) return;
+      else cur+=v;
+      paint();
+    });
+  }
+},
+{ id:'js-02', num:2, title:'Digital Clock',
+  desc:'A live clock that updates every second.',
+  body:`<div class="clock">
+      <div class="time" id="clockTime">--:--:--</div>
+      <div class="date" id="clockDate"></div>
+    </div>`,
+  init(){
+    const t=document.getElementById('clockTime');
+    const d=document.getElementById('clockDate');
+    const p=n=>String(n).padStart(2,'0');
+    const tick=()=>{
+      const n=new Date();
+      t.textContent=p(n.getHours())+':'+p(n.getMinutes())+':'+p(n.getSeconds());
+      d.textContent=n.toLocaleDateString(undefined,
+        {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    };
+    tick();
+    const id=setInterval(tick,1000);
+    registerCleanup(()=>clearInterval(id));
+  }
+},
+{ id:'js-03', num:3, title:'Stopwatch',
+  desc:'Start, stop and reset with hundredth-of-a-second precision.',
+  body:`<div class="sw">
+      <div class="t" id="swT">00:00:00</div>
+      <button class="btn success" id="swStart">Start</button>
+      <button class="btn danger" id="swStop">Stop</button>
+      <button class="btn" id="swReset" style="background:#475569;">Reset</button>
+    </div>`,
+  init(){
+    const tEl=document.getElementById('swT');
+    let elapsed=0,running=false,timer=null,last=0;
+    const fmt=ms=>{
+      const p=x=>String(x).padStart(2,'0');
+      return p(Math.floor(ms/60000))+':'+p(Math.floor(ms/1000)%60)+':'+p(Math.floor((ms%1000)/10));
+    };
+    const loop=()=>{
+      const now=performance.now();
+      elapsed+=now-last; last=now;
+      tEl.textContent=fmt(elapsed);
+    };
+    document.getElementById('swStart').onclick=()=>{
+      if(running)return;
+      running=true; last=performance.now();
+      timer=setInterval(loop,30);
+    };
+    document.getElementById('swStop').onclick=()=>{
+      if(!running)return;
+      running=false; clearInterval(timer);
+    };
+    document.getElementById('swReset').onclick=()=>{
+      running=false; clearInterval(timer);
+      elapsed=0; tEl.textContent='00:00:00';
+    };
+    registerCleanup(()=>clearInterval(timer));
+  }
+},
+{ id:'js-04', num:4, title:'Countdown Timer',
+  desc:'Enter a number of seconds and watch the countdown.',
+  body:`<div class="cd">
+      <div style="font-size:13px;color:#94a3b8;">Seconds</div>
+      <div style="margin:10px 0;"><input type="number" id="cdIn" value="10" min="1" max="3600"></div>
+      <button class="btn success" id="cdStart">Start</button>
+      <button class="btn" id="cdStop" style="background:#475569;">Stop</button>
+      <div class="t" id="cdDisp">00:10</div>
+    </div>`,
+  init(){
+    const input=document.getElementById('cdIn');
+    const disp=document.getElementById('cdDisp');
+    let remaining=10,timer=null;
+    const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+    const paint=()=>disp.textContent=fmt(remaining);
+    document.getElementById('cdStart').onclick=()=>{
+      clearInterval(timer);
+      remaining=Math.max(1,parseInt(input.value)||10);
+      paint();
+      timer=setInterval(()=>{
+        remaining--; paint();
+        if(remaining<=0){clearInterval(timer);disp.textContent='00:00 — Done!';}
+      },1000);
+    };
+    document.getElementById('cdStop').onclick=()=>clearInterval(timer);
+    registerCleanup(()=>clearInterval(timer));
+  }
+},
+{ id:'js-05', num:5, title:'To-Do List',
+  desc:'Add, complete and delete tasks. State persists in localStorage.',
+  body:`<div class="todo">
+      <div class="todo-row">
+        <input type="text" id="todoIn" placeholder="Add a new task...">
+        <button class="btn" id="todoAdd">Add</button>
+      </div>
+      <ul class="tlist" id="todoList"></ul>
+      <div class="empty" id="todoEmpty">No tasks yet. Add one above.</div>
+    </div>`,
+  init(){
+    const input=document.getElementById('todoIn');
+    const list=document.getElementById('todoList');
+    const empty=document.getElementById('todoEmpty');
+    const KEY='wtl_todo_demo';
+    let items=[];
+    try{items=JSON.parse(localStorage.getItem(KEY)||'[]');}catch(_){items=[];}
+    const save=()=>localStorage.setItem(KEY,JSON.stringify(items));
+    const render=()=>{
+      list.innerHTML='';
+      empty.style.display=items.length?'none':'block';
+      items.forEach((it,i)=>{
+        const li=document.createElement('li');
+        if(it.done) li.classList.add('done');
+        const span=document.createElement('span');
+        span.className='txt'; span.textContent=it.text;
+        const del=document.createElement('button');
+        del.className='del'; del.textContent='✕';
+        span.onclick=()=>{items[i].done=!items[i].done;save();render();};
+        del.onclick=()=>{items.splice(i,1);save();render();};
+        li.appendChild(span); li.appendChild(del);
+        list.appendChild(li);
+      });
+    };
+    const add=()=>{
+      const v=input.value.trim(); if(!v)return;
+      items.push({text:v,done:false}); input.value='';
+      save(); render();
+    };
+    document.getElementById('todoAdd').onclick=add;
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')add();});
+    render();
+  }
+},
+{ id:'js-06', num:6, title:'DOM — Changing Content',
+  desc:'Read and modify text and HTML content of elements.',
+  body:`<div class="dom-box" id="dom6Box">Original content goes here.</div>
+    <div class="row">
+      <button class="btn" id="dom6Text">Change text</button>
+      <button class="btn ghost" id="dom6Html">Change HTML</button>
+      <button class="btn ghost" id="dom6Reset">Reset</button>
+    </div>`,
+  init(){
+    const box=document.getElementById('dom6Box');
+    document.getElementById('dom6Text').onclick=()=>{
+      box.textContent='Text changed at '+new Date().toLocaleTimeString();
+    };
+    document.getElementById('dom6Html').onclick=()=>{
+      box.innerHTML='<strong style="color:#1e40af;">Bold</strong> and <em style="color:#059669;">italic</em> via innerHTML.';
+    };
+    document.getElementById('dom6Reset').onclick=()=>{
+      box.textContent='Original content goes here.';
+    };
+  }
+},
+{ id:'js-07', num:7, title:'DOM — Adding &amp; Removing Elements',
+  desc:'Create, append and remove child nodes dynamically.',
+  body:`<div class="row" style="margin-bottom:14px;">
+      <button class="btn" id="dom7Add">Add chip</button>
+      <button class="btn ghost" id="dom7Clear">Remove all</button>
+    </div>
+    <div class="dom-box" id="dom7Wrap" style="min-height:60px;">
+      <span class="hint">Chips will appear here.</span>
+    </div>`,
+  init(){
+    const wrap=document.getElementById('dom7Wrap');
+    let n=0;
+    document.getElementById('dom7Add').onclick=()=>{
+      if(n===0) wrap.innerHTML='';
+      n++;
+      const chip=document.createElement('span');
+      chip.className='chip';
+      const label=document.createElement('span');
+      label.textContent='Chip '+n;
+      const btn=document.createElement('button');
+      btn.textContent='✕';
+      btn.onclick=()=>{
+        chip.remove();
+        if(!wrap.children.length){
+          wrap.innerHTML='<span class="hint">Chips will appear here.</span>';
+          n=0;
+        }
+      };
+      chip.appendChild(label); chip.appendChild(btn);
+      wrap.appendChild(chip);
+    };
+    document.getElementById('dom7Clear').onclick=()=>{
+      wrap.innerHTML='<span class="hint">Chips will appear here.</span>';
+      n=0;
+    };
+  }
+},
+{ id:'js-08', num:8, title:'DOM — Dynamic Styling',
+  desc:'Change CSS styles on the fly.',
+  body:`<div id="dom8Box" class="dom-box" style="transition:.3s;">Style me!</div>
+    <div class="row">
+      <button class="btn" id="dom8Color">Random colour</button>
+      <button class="btn ghost" id="dom8Big">Toggle big text</button>
+      <button class="btn ghost" id="dom8Reset">Reset</button>
+    </div>`,
+  init(){
+    const box=document.getElementById('dom8Box');
+    let big=false;
+    document.getElementById('dom8Color').onclick=()=>{
+      const h=Math.floor(Math.random()*360);
+      box.style.background='hsl('+h+',80%,92%)';
+      box.style.borderColor='hsl('+h+',70%,55%)';
+      box.style.color='hsl('+h+',60%,25%)';
+    };
+    document.getElementById('dom8Big').onclick=()=>{
+      big=!big;
+      box.style.fontSize=big?'24px':'14px';
+      box.style.padding=big?'28px':'16px';
+    };
+    document.getElementById('dom8Reset').onclick=()=>{
+      box.removeAttribute('style'); box.style.transition='.3s'; big=false;
+    };
+  }
+},
+{ id:'js-09', num:9, title:'DOM — Traversal',
+  desc:'Walk the DOM tree using parent, children and siblings.',
+  body:`<ul class="tree" id="dom9Tree">
+      <li><span class="node">Fruits</span>
+        <ul class="tree">
+          <li><span class="node">Apple</span></li>
+          <li><span class="node">Banana</span></li>
+        </ul></li>
+      <li><span class="node">Vegetables</span>
+        <ul class="tree">
+          <li><span class="node">Carrot</span></li>
+          <li><span class="node">Spinach</span></li>
+        </ul></li>
+    </ul>
+    <div class="row" style="margin-top:14px;">
+      <button class="btn" id="dom9Parent">parentNode</button>
+      <button class="btn ghost" id="dom9Children">children</button>
+      <button class="btn ghost" id="dom9Siblings">siblings</button>
+    </div>
+    <div class="out" id="dom9Out">Click a button to inspect the tree.</div>`,
+  init(){
+    const out=document.getElementById('dom9Out');
+    const tree=document.getElementById('dom9Tree');
+    const target=tree.querySelectorAll('.node')[3];
+    document.getElementById('dom9Parent').onclick=()=>{
+      out.textContent='parentNode of "Carrot" → '+target.parentElement.tagName;
+    };
+    document.getElementById('dom9Children').onclick=()=>{
+      const ul=target.parentElement.parentElement;
+      out.textContent='children of "'+ul.parentElement.querySelector('.node').textContent+'" → '+ul.children.length+' items';
+    };
+    document.getElementById('dom9Siblings').onclick=()=>{
+      const li=target.parentElement;
+      const sib=li.nextElementSibling;
+      out.textContent='nextElementSibling of "Carrot" → '+(sib?sib.textContent.trim():'none');
+    };
+  }
+},
+{ id:'js-10', num:10, title:'Events — Click Counter',
+  desc:'Respond to click events and update the UI.',
+  body:`<div class="clickzone" id="evZone">Click anywhere in this box</div>
+    <div class="out" id="evOut">Clicks: 0</div>
+    <button class="btn ghost small" id="evReset" style="margin-top:10px;">Reset</button>`,
+  init(){
+    const zone=document.getElementById('evZone');
+    const out=document.getElementById('evOut');
+    let n=0;
+    zone.onclick=()=>{n++;out.textContent='Clicks: '+n;};
+    document.getElementById('evReset').onclick=()=>{n=0;out.textContent='Clicks: 0';};
+  }
+},
+{ id:'js-11', num:11, title:'Events — Mouse &amp; Keyboard',
+  desc:'mousemove, mouseenter, mouseleave, keydown, keyup.',
+  body:`<div class="mousezone" id="mz" style="margin-bottom:12px;">Move your mouse here</div>
+    <div class="out" id="mo">Waiting for mouse events...</div>
+    <div class="keyzone" id="kz" tabindex="0" style="margin-top:14px;">
+      Click here, then press any key
+      <div class="k" id="ko">—</div>
+    </div>
+    <div class="out" id="ki" style="margin-top:12px;">keydown / keyup events will be logged here.</div>`,
+  init(){
+    const mz=document.getElementById('mz');
+    const mo=document.getElementById('mo');
+    mz.addEventListener('mousemove',e=>{
+      const r=mz.getBoundingClientRect();
+      mo.textContent='mousemove  →  x: '+(e.clientX-r.left)+'  y: '+(e.clientY-r.top);
+    });
+    mz.addEventListener('mouseenter',()=>{mz.style.background='#1e40af';mz.textContent='Mouse is inside';});
+    mz.addEventListener('mouseleave',()=>{mz.style.background='#0f172a';mz.textContent='Move your mouse here';});
+    const kz=document.getElementById('kz');
+    const ko=document.getElementById('ko');
+    const ki=document.getElementById('ki');
+    kz.addEventListener('keydown',e=>{
+      ko.textContent=e.key===' '?'Space':e.key;
+      ki.textContent='keydown  →  key: "'+e.key+'"  |  code: '+e.code+'  |  shift: '+e.shiftKey;
+      e.preventDefault();
+    });
+    kz.addEventListener('keyup',()=>{setTimeout(()=>{ko.textContent='—';},250);});
+  }
+},
+{ id:'js-12', num:12, title:'Forms &amp; Validation',
+  desc:'Real-time field validation with helpful messages.',
+  body:`<form id="vForm" novalidate>
+      <div class="field"><label>Username</label>
+        <input type="text" id="vUser" placeholder="3–15 letters / numbers">
+        <div class="hint" id="vUserHint"></div></div>
+      <div class="field"><label>Email</label>
+        <input type="email" id="vMail" placeholder="you@example.com">
+        <div class="hint" id="vMailHint"></div></div>
+      <div class="field"><label>Password</label>
+        <input type="password" id="vPass" placeholder="Minimum 6 characters">
+        <div class="hint" id="vPassHint"></div></div>
+      <button class="btn" type="submit">Submit</button>
+      <div class="vmsg" id="vMsg"></div>
+    </form>`,
+  init(){
+    const form=document.getElementById('vForm');
+    const msg=document.getElementById('vMsg');
+    const set=(id,ok,text)=>{
+      const el=document.getElementById(id);
+      el.className='hint '+(ok?'ok':'err');
+      el.textContent=text;
+    };
+    const check=(id,hintId,test,okMsg,errMsg)=>{
+      const inp=document.getElementById(id);
+      inp.addEventListener('input',()=>{
+        const v=inp.value.trim();
+        if(!v){inp.className='';document.getElementById(hintId).textContent='';return;}
+        const ok=test(v);
+        inp.className=ok?'ok':'err';
+        set(hintId,ok,ok?okMsg:errMsg);
+      });
+    };
+    check('vUser','vUserHint',v=>/^[A-Za-z0-9]{3,15}$/.test(v),'✓ Username accepted','✕ 3–15 letters or numbers only');
+    check('vMail','vMailHint',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),'✓ Valid email','✕ Enter a valid email');
+    check('vPass','vPassHint',v=>v.length>=6,'✓ Strong enough','✕ Minimum 6 characters');
+    form.addEventListener('submit',e=>{
+      e.preventDefault();
+      const ok=['vUser','vMail','vPass'].every(id=>document.getElementById(id).classList.contains('ok'));
+      msg.className='vmsg '+(ok?'ok':'err');
+      msg.textContent=ok?'✓ All fields are valid. Form submitted successfully.':'✕ Please fix the errors above before submitting.';
+    });
+  }
+},
+{ id:'js-13', num:13, title:'Browser Objects',
+  desc:'Inspect window, navigator, screen and location.',
+  body:`<div class="section-h">Navigator</div>
+    <div class="kv">
+      <div class="k">Language</div><div class="v" id="bLang">—</div>
+      <div class="k">Platform</div><div class="v" id="bPlat">—</div>
+      <div class="k">Online</div><div class="v" id="bOn">—</div>
+      <div class="k">Cookies enabled</div><div class="v" id="bCk">—</div>
+    </div>
+    <div class="section-h">Screen &amp; Window</div>
+    <div class="kv">
+      <div class="k">Screen size</div><div class="v" id="bScr">—</div>
+      <div class="k">Viewport</div><div class="v" id="bVp">—</div>
+      <div class="k">Pixel ratio</div><div class="v" id="bPr">—</div>
+    </div>
+    <div class="section-h">Location</div>
+    <div class="kv">
+      <div class="k">href</div><div class="v" id="bHref">—</div>
+      <div class="k">protocol</div><div class="v" id="bProto">—</div>
+      <div class="k">pathname</div><div class="v" id="bPath">—</div>
+    </div>
+    <div class="row" style="margin-top:16px;">
+      <button class="btn" id="bReload">Reload page</button>
+    </div>`,
+  init(){
+    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    set('bLang',navigator.language||'—');
+    set('bPlat',navigator.platform||'—');
+    set('bOn',navigator.onLine?'Yes':'No');
+    set('bCk',navigator.cookieEnabled?'Yes':'No');
+    set('bScr',screen.width+' × '+screen.height);
+    set('bVp',innerWidth+' × '+innerHeight);
+    set('bPr',devicePixelRatio||1);
+    set('bHref',location.href);
+    set('bProto',location.protocol);
+    set('bPath',location.pathname||'(inline)');
+    const onResize=()=>set('bVp',innerWidth+' × '+innerHeight);
+    window.addEventListener('resize',onResize);
+    registerCleanup(()=>window.removeEventListener('resize',onResize));
+    document.getElementById('bReload').onclick=()=>location.reload();
+  }
+},
+{ id:'js-14', num:14, title:'Timers — setTimeout &amp; setInterval',
+  desc:'Delayed execution and repeated execution.',
+  body:`<div class="timerbox">
+      <div style="font-size:12px;color:#94a3b8;letter-spacing:1.4px;text-transform:uppercase;">
+        setInterval Counter</div>
+      <div class="t" id="tmCount">0</div>
+      <div class="row" style="justify-content:center;">
+        <button class="btn success" id="tmStart">Start</button>
+        <button class="btn danger" id="tmStop">Stop</button>
+        <button class="btn" id="tmReset" style="background:#475569;">Reset</button>
+      </div>
+    </div>
+    <div class="out" id="tmOut" style="margin-top:14px;">setTimeout() output will appear here...</div>`,
+  init(){
+    const el=document.getElementById('tmCount');
+    const out=document.getElementById('tmOut');
+    let n=0,iv=null;
+    document.getElementById('tmStart').onclick=()=>{
+      if(iv)return;
+      iv=setInterval(()=>{n++;el.textContent=n;},200);
+    };
+    document.getElementById('tmStop').onclick=()=>{
+      clearInterval(iv); iv=null;
+      setTimeout(()=>{out.textContent='setTimeout → displayed after a 1-second delay.';},1000);
+    };
+    document.getElementById('tmReset').onclick=()=>{
+      clearInterval(iv); iv=null; n=0;
+      el.textContent='0'; out.textContent='Counter reset.';
+    };
+    registerCleanup(()=>clearInterval(iv));
+  }
+},
+{ id:'js-15', num:15, title:'Web Storage — localStorage &amp; sessionStorage',
+  desc:'Persist small amounts of data in the browser.',
+  body:`<div class="storage">
+      <div class="panel">
+        <h4>localStorage (persists)</h4>
+        <input type="text" id="lsIn" placeholder="Value to save...">
+        <div class="row" style="margin-bottom:10px;">
+          <button class="btn small" id="lsSave">Save</button>
+          <button class="btn ghost small" id="lsClr">Clear</button>
+        </div>
+        <div class="val" id="lsV">(empty)</div>
+      </div>
+      <div class="panel">
+        <h4>sessionStorage (per tab)</h4>
+        <input type="text" id="ssIn" placeholder="Value to save...">
+        <div class="row" style="margin-bottom:10px;">
+          <button class="btn small" id="ssSave">Save</button>
+          <button class="btn ghost small" id="ssClr">Clear</button>
+        </div>
+        <div class="val" id="ssV">(empty)</div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:14px;">localStorage survives page reloads; sessionStorage is cleared when the tab is closed.</p>`,
+  init(){
+    const lsIn=document.getElementById('lsIn');
+    const lsV=document.getElementById('lsV');
+    const ssIn=document.getElementById('ssIn');
+    const ssV=document.getElementById('ssV');
+    const paint=()=>{
+      lsV.textContent=localStorage.getItem('wtl_ls_demo')||'(empty)';
+      ssV.textContent=sessionStorage.getItem('wtl_ss_demo')||'(empty)';
+    };
+    paint();
+    document.getElementById('lsSave').onclick=()=>{
+      localStorage.setItem('wtl_ls_demo',lsIn.value||'(blank)');
+      lsIn.value=''; paint();
+    };
+    document.getElementById('lsClr').onclick=()=>{
+      localStorage.removeItem('wtl_ls_demo'); paint();
+    };
+    document.getElementById('ssSave').onclick=()=>{
+      sessionStorage.setItem('wtl_ss_demo',ssIn.value||'(blank)');
+      ssIn.value=''; paint();
+    };
+    document.getElementById('ssClr').onclick=()=>{
+      sessionStorage.removeItem('wtl_ss_demo'); paint();
+    };
+  }
+}
+]
+};
+
+const CATS={
+  html:{name:'HTML Programs',icon:'HTML'},
+  css:{name:'CSS Programs',icon:'CSS'},
+  javascript:{name:'JavaScript Programs',icon:'JS'}
+};
+
+/* ============ UTILITIES ============ */
+let cleanups=[];
+function registerCleanup(fn){cleanups.push(fn);}
+function runCleanups(){cleanups.forEach(fn=>{try{fn();}catch(_){}});cleanups=[];}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ============ SIDEBAR ============ */
+function buildSidebar(){
+  const nav=$('sidebarNav');
+  let html='<div class="nav-section"><a class="nav-link" href="#/" data-route="/"><span class="dot"></span>Dashboard</a></div>';
+  ['html','css','javascript'].forEach(cat=>{
+    html+='<div class="nav-section"><div class="nav-section-title">'+esc(CATS[cat].name)+' · '+PROGRAMS[cat].length+'</div>';
+    PROGRAMS[cat].forEach(p=>{
+      html+='<a class="nav-link" href="#/'+cat+'/'+p.id+'" data-route="'+cat+'/'+p.id+'">'+
+        '<span class="num">'+String(p.num).padStart(2,'0')+'</span><span>'+p.title+'</span></a>';
+    });
+    html+='</div>';
+  });
+  nav.innerHTML=html;
+}
+function setActiveSidebar(route){
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    a.classList.toggle('active',a.dataset.route===route);
+  });
+}
+
+/* ============ PAGE RENDERERS ============ */
+function renderDashboard(){
+  $('breadcrumb').innerHTML='<strong>Dashboard</strong>';
+  const cards=[
+    {cat:'html',cls:'c-html',icon:'HTML',title:'HTML Programs',
+     desc:'Document structure, text formatting, lists, links, images, tables, forms, semantic tags and multimedia embeds.'},
+    {cat:'css',cls:'c-css',icon:'CSS',title:'CSS Programs',
+     desc:'Selectors, colours, box model, positioning, float, Flexbox, Grid, animation, pseudo-classes and responsive design.'},
+    {cat:'javascript',cls:'c-js',icon:'JS',title:'JavaScript Programs',
+     desc:'Mini projects, DOM manipulation, events, forms &amp; validation, browser objects and web storage.'}
+  ];
+  let html=`<section class="hero">
+      <div class="kicker">Academic Year 2025 · Web Technology Lab</div>
+      <h1>HTML • CSS • JavaScript</h1>
+      <h2>Practical Programs — Complete Collection</h2>
+      <p>A single, self-contained website covering all 35 lab programs:
+        markup, styling, DOM scripting, events, form validation,
+        browser objects and web storage — each with a live demo.</p>
+    </section>
+    <div class="card-grid">`;
+  cards.forEach(c=>{
+    html+=`<article class="card ${c.cls}">
+        <div class="icon">${c.icon}</div>
+        <div class="count">${PROGRAMS[c.cat].length} Programs</div>
+        <h3>${c.title}</h3>
+        <p>${c.desc}</p>
+        <a class="btn" href="#/${c.cat}">View ${c.title}</a>
+      </article>`;
+  });
+  html+=`</div>
+    <div style="margin-top:34px;padding:20px 24px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);">
+      <div class="section-h" style="margin-top:0;">Project Summary</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;font-size:14px;">
+        <div><strong style="color:#1e40af;font-size:1.4rem;">10</strong><div style="color:var(--muted);">HTML Programs</div></div>
+        <div><strong style="color:#1e40af;font-size:1.4rem;">10</strong><div style="color:var(--muted);">CSS Programs</div></div>
+        <div><strong style="color:#1e40af;font-size:1.4rem;">15</strong><div style="color:var(--muted);">JavaScript Programs</div></div>
+        <div><strong style="color:#1e40af;font-size:1.4rem;">35</strong><div style="color:var(--muted);">Total Programs</div></div>
+      </div>
+      <p style="margin-top:16px;font-size:13.5px;color:var(--muted);">
+        Use the sidebar to browse programs, or open a category card above.
+        Every program includes a working demo, short description and
+        navigation back to the dashboard.</p>
+    </div>`;
+  $('content').innerHTML=html;
+}
+
+function renderCategory(cat){
+  const c=CATS[cat];
+  $('breadcrumb').innerHTML='<strong>Dashboard</strong><span class="sep">/</span>'+esc(c.name);
+  let html=`<div class="page-head">
+      <div class="crumb">${c.icon} · Category</div>
+      <h1>${esc(c.name)}</h1>
+      <p class="lead">${PROGRAMS[cat].length} programs with live demonstrations. Click any program to open it.</p>
+    </div>
+    <div class="list-wrap"><ul class="prog-list">`;
+  PROGRAMS[cat].forEach(p=>{
+    html+=`<a class="prog-item" href="#/${cat}/${p.id}">
+        <div class="idx">${String(p.num).padStart(2,'0')}</div>
+        <div class="meta">
+          <div class="t">${p.title}</div>
+          <div class="d">${p.desc}</div>
+        </div>
+        <div class="arrow">›</div>
+      </a>`;
+  });
+  html+=`</ul></div>
+    <div class="page-actions"><a class="btn ghost" href="#/">← Back to Dashboard</a></div>`;
+  $('content').innerHTML=html;
+}
+
+function renderProgram(cat,id){
+  const prog=PROGRAMS[cat].find(p=>p.id===id);
+  if(!prog){renderNotFound();return;}
+  $('breadcrumb').innerHTML=
+    '<strong>Dashboard</strong><span class="sep">/</span>'+
+    '<a href="#/'+cat+'">'+esc(CATS[cat].name)+'</a>'+
+    '<span class="sep">/</span>'+prog.title;
+  const html=`<div class="page-head">
+      <div class="crumb">${CATS[cat].icon} · Program ${String(prog.num).padStart(2,'0')}</div>
+      <h1>${prog.title}</h1>
+      <p class="lead">${prog.desc}</p>
+    </div>
+    <div class="demo-card">
+      <div class="demo-label">Live Output</div>
+      <div class="demo-body">${prog.body}</div>
+    </div>
+    <div class="page-actions">
+      <a class="btn" href="#/${cat}">← Back to ${esc(CATS[cat].name)}</a>
+      <a class="btn ghost" href="#/">Home</a>
+    </div>`;
+  $('content').innerHTML=html;
+  if(typeof prog.init==='function'){
+    try{prog.init();}
+    catch(err){console.error('Init error for '+id,err);}
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderNotFound(){
+  $('breadcrumb').innerHTML='<strong>Not Found</strong>';
+  $('content').innerHTML=`<div class="page-head"><h1>Page not found</h1>
+    <p class="lead">The page you requested does not exist.</p></div>
+    <a class="btn" href="#/">← Back to Dashboard</a>`;
+}
+
+/* ============ ROUTER ============ */
+function route(){
+  runCleanups();
+  const hash=location.hash.replace(/^#\/?/,'');
+  const parts=hash.split('/').filter(Boolean);
+  if(parts.length===0){
+    renderDashboard(); setActiveSidebar('/');
+  } else if(parts.length===1&&CATS[parts[0]]){
+    renderCategory(parts[0]); setActiveSidebar(parts[0]);
+  } else if(parts.length===2&&CATS[parts[0]]){
+    renderProgram(parts[0],parts[1]);
+    setActiveSidebar(parts[0]+'/'+parts[1]);
+  } else {
+    renderNotFound(); setActiveSidebar('/');
+  }
+  $('sidebar').classList.remove('open');
+}
+
+/* ============ BOOT ============ */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildSidebar();
+  route();
+  window.addEventListener('hashchange',route);
+  $('hamburger').addEventListener('click',()=>{
+    $('sidebar').classList.toggle('open');
+  });
+  document.addEventListener('click',e=>{
+    const sb=$('sidebar');
+    if(window.innerWidth<=980&&sb.classList.contains('open')){
+      if(!sb.contains(e.target)&&!$('hamburger').contains(e.target)){
+        sb.classList.remove('open');
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
